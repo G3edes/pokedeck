@@ -194,11 +194,24 @@ npm run preview
 
 O `dist/` gerado é um site estático — pode ser publicado em qualquer host de arquivos estáticos:
 
+- **Render**: crie um *Static Site* apontando para este repositório — o `render.yaml` na raiz já configura build, publish e o rewrite de SPA automaticamente (deploy via *Blueprint*). Veja o passo a passo abaixo.
 - **Vercel / Netlify**: conecte o repositório, comando de build `npm run build`, diretório de saída `dist`
 - **GitHub Pages**: publique o conteúdo de `dist/` na branch `gh-pages`
 - **Servidor próprio**: sirva `dist/` com qualquer servidor HTTP (Nginx, Caddy, etc.)
 
 Como as rotas usam `BrowserRouter`, configure o host para redirecionar todas as rotas para `index.html` (SPA fallback).
+
+### Deploy no Render
+
+1. Acesse [dashboard.render.com](https://dashboard.render.com) → **New** → **Static Site**.
+2. Conecte a conta do GitHub e selecione o repositório `pokedeck`.
+3. Confirme as configurações (o Render lê o `render.yaml` automaticamente):
+   - **Build Command**: `npm install && npm run build`
+   - **Publish Directory**: `dist`
+4. Se for usar uma API key da Pokémon TCG API, adicione a variável de ambiente `VITE_POKEMON_TCG_API_KEY` em **Environment** antes do primeiro deploy (variáveis `VITE_*` são embutidas no build, então precisam existir *antes* de buildar).
+5. Clique em **Create Static Site**. Cada push na branch `main` dispara um novo deploy automaticamente.
+
+O rewrite `/* → /index.html` já vem configurado no `render.yaml`, então navegar direto para uma rota como `/decks` ou `/cards/base1-4` funciona normalmente (sem isso, o Render retornaria 404 em rotas que não sejam `/`).
 
 ## Decisões de arquitetura
 
