@@ -48,7 +48,9 @@ apiClient.interceptors.response.use(
       }
       if (!error.response) {
         return Promise.reject(
-          new ApiError('Não foi possível conectar à Pokémon TCG API. Verifique sua conexão.'),
+          new ApiError(
+            'Não foi possível se comunicar com a Pokémon TCG API agora. Isso costuma ser instabilidade temporária do serviço — verifique sua conexão e tente novamente em instantes.',
+          ),
         )
       }
       return Promise.reject(
